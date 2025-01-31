@@ -15,7 +15,7 @@ bool MPU6050::initialize() {
         return false;
     }
 
-    this->setPowerCtl_1(0x00, 0x00, 0x00, 0x00, INT_8MHz_OSC); // Disable sleep mode
+    this->setPowerCtl_1(0x00, 0x00, 0x00, 0x00, INT_8MHz_OSC); // Desabilita sleep mode
     ThisThread::sleep_for(1ms);
     char data[2];
 
@@ -55,7 +55,7 @@ void MPU6050::setFSYNCConfig(uint8_t Conf) {
 
     conf_L = SingleByteRead(CONFIG_REG) & 0x07; // Lê os 3 bits menos significativos
     conf_H = Conf << 3;                         // Move a configuração FSYNC para os bits 3-5
-    conf_HL = conf_H | conf_L;                  // Combina as partes alta e baixa
+    conf_HL = conf_H | conf_L;                  // Junta as partes alta e baixa
 
     SingleByteWrite(CONFIG_REG, conf_HL);       // Escreve no registro CONFIG_REG
 }
@@ -69,11 +69,11 @@ void MPU6050::setDLPFConfig(uint8_t Conf) {
     uint8_t conf_H;
     uint8_t conf_HL;
 
-    conf_L = Conf;                                   // Configuração do DLPF (bits 0-2)
-    conf_H = SingleByteRead(CONFIG_REG) & 0x38;     // Preserva os bits 3-5 do registro CONFIG_REG
-    conf_HL = conf_H | conf_L;                      // Combina os bits DLPF com os bits preservados
+    conf_L = Conf;                                   // Configuração do DLPF 
+    conf_H = SingleByteRead(CONFIG_REG) & 0x38;     
+    conf_HL = conf_H | conf_L;                      
 
-    SingleByteWrite(CONFIG_REG, conf_HL);           // Escreve o valor combinado no registro CONFIG_REG
+    SingleByteWrite(CONFIG_REG, conf_HL);           
 }
 
 uint8_t MPU6050::getDLPFConfig(void) {
@@ -185,7 +185,7 @@ uint8_t MPU6050::getWhoAmI(void) {
 }
 
 char MPU6050::SingleByteRead(char address) {
-    // Simulação: Retorna valores fixos com base no endereço do registrador
+    // Simulação: Retorna valores fixos com base no endereço do registrador (usaremos apenas os dados do eixo Z)
     switch (address) {
         case WHO_AM_I_REG: return 0x68; // ID esperado do sensor
         case GYRO_XOUT_H_REG: return 0x10; // Valor alto do giroscópio no eixo X
